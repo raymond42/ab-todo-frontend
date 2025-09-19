@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import KanbanBoard from "@/components/KanbanBoard";
 import "@testing-library/jest-dom";
+import KanbanBoard from "@/components/KanbanBoard";
 
 jest.mock("lucide-react", () => ({
   SquarePen: () => <span data-testid="icon-squarepen" />,
@@ -9,10 +9,33 @@ jest.mock("lucide-react", () => ({
   ShieldCheck: () => <span data-testid="icon-shield" />,
 }));
 
+jest.mock("@/features/todos/components/KanbanCard", () => {
+  return function MockKanbanCard({ todo }: any) {
+    return <div data-testid="kanban-card">{todo.title}</div>;
+  };
+});
+
+const mockFetchTodos = jest.fn();
+jest.mock("@/features/todos/store/todoStore", () => ({
+  useTodoStore: () => ({
+    todos: [
+      { id: 1, title: "Design login page", status: "todo" },
+      { id: 2, title: "API integration", status: "onprogress" },
+      { id: 3, title: "Code review", status: "needsreview" },
+      { id: 4, title: "Deploy to staging", status: "done" },
+    ],
+    loading: false,
+    fetchTodos: mockFetchTodos,
+  }),
+}));
+
 describe("KanbanBoard", () => {
+  beforeEach(() => {
+    mockFetchTodos.mockClear();
+  });
+
   test("renders all columns with correct labels", () => {
     render(<KanbanBoard />);
-
     expect(screen.getByText("To-do")).toBeInTheDocument();
     expect(screen.getByText("On Progress")).toBeInTheDocument();
     expect(screen.getByText("Needs Review")).toBeInTheDocument();
@@ -21,7 +44,6 @@ describe("KanbanBoard", () => {
 
   test("renders todos in correct columns", () => {
     render(<KanbanBoard />);
-
     expect(screen.getByText("Design login page")).toBeInTheDocument();
     expect(screen.getByText("API integration")).toBeInTheDocument();
     expect(screen.getByText("Code review")).toBeInTheDocument();
@@ -30,10 +52,14 @@ describe("KanbanBoard", () => {
 
   test("renders icons for each column", () => {
     render(<KanbanBoard />);
-
     expect(screen.getByTestId("icon-squarepen")).toBeInTheDocument();
     expect(screen.getByTestId("icon-circle")).toBeInTheDocument();
     expect(screen.getByTestId("icon-flame")).toBeInTheDocument();
     expect(screen.getByTestId("icon-shield")).toBeInTheDocument();
+  });
+
+  test("calls fetchTodos on mount", () => {
+    render(<KanbanBoard />);
+    expect(mockFetchTodos).toHaveBeenCalled();
   });
 });

@@ -1,84 +1,87 @@
-import { Todo } from "../types";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { MessageSquare, Paperclip, Calendar } from "lucide-react";
+import { SegmentedProgress } from "@/components/ui/progress";
+import { Todo } from "@/features/todos/store/todoStore";
+import { SquareCheck, Paperclip, MessageSquare } from "lucide-react";
 
-export default function KanbanCard({ todo }: { todo: Todo }) {
-  const totalChecklist = todo.checklist?.length || 0;
-  const completedChecklist = todo.checklist?.filter((c) => c.done).length || 0;
+type Props = {
+  todo: Todo;
+};
 
-  const progress =
-    totalChecklist > 0
-      ? Math.round((completedChecklist / totalChecklist) * 100)
-      : 0;
+export default function KanbanCard({ todo }: Props) {
+  const totalCount = todo.checklist?.length || 0;
+  const completedCount =
+    todo.checklist?.filter((item) => item.done).length || 0;
 
   return (
-    <Card className="rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition">
-      <CardHeader className="p-3">
-        <CardTitle className="text-base font-medium">{todo.title}</CardTitle>
-      </CardHeader>
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 flex flex-col gap-2 hover:shadow transition">
+      {todo.dueDate && (
+        <span className="text-[11px] font-medium text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-gradient-to-r from-gray-400 to-gray-400 border-gray-200 border inline-block mr-1 justify-center" />
+          {new Date(todo.dueDate).toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </span>
+      )}
 
-      <CardContent className="px-3 pb-3 flex flex-col gap-2">
-        {/* Description */}
-        {todo.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {todo.description}
-          </p>
-        )}
+      <h3 className="font-medium text-sm text-gray-800 dark:text-gray-100 leading-snug line-clamp-2">
+        {todo.title}
+      </h3>
 
-        {/* Checklist progress */}
-        {totalChecklist > 0 && (
-          <div className="flex items-center gap-2">
-            <Progress value={progress} className="h-2 flex-1" />
-            <span className="text-xs text-muted-foreground">
-              {completedChecklist}/{totalChecklist}
+      {todo.description && (
+        <p className="text-[11px] text-gray-500 dark:text-gray-400">
+          {todo.description}
+        </p>
+      )}
+
+      <div className="border-b border-gray-200 dark:border-gray-700 my-2" />
+
+      {totalCount > 0 && (
+        <div className="mt-1">
+          <div className="flex items-center justify-between text-[11px] text-gray-500 mb-1">
+            <div className="flex items-center gap-2">
+              <SquareCheck size={16} className="text-gray-400" />
+              <span className="text-[12px]">Checklist</span>
+            </div>
+            <span className="font-medium">
+              {completedCount}/{totalCount}
             </span>
           </div>
-        )}
-      </CardContent>
 
-      <CardFooter className="px-3 pb-3 flex justify-between items-center">
-        {/* Left: metadata */}
-        <div className="flex gap-3 text-muted-foreground text-sm">
-          {todo.comments ? (
-            <div className="flex items-center gap-1">
-              <MessageSquare size={14} />
-              {todo.comments}
-            </div>
-          ) : null}
+          <SegmentedProgress
+            total={totalCount}
+            completed={completedCount}
+            className="w-full"
+          />
 
-          {todo.attachments ? (
-            <div className="flex items-center gap-1">
-              <Paperclip size={14} />
-              {todo.attachments}
-            </div>
-          ) : null}
+          <div className="border-b border-gray-200 dark:border-gray-700 my-2 pt-2" />
+        </div>
+      )}
 
-          {todo.dueDate ? (
-            <div className="flex items-center gap-1">
-              <Calendar size={14} />
-              <span>{new Date(todo.dueDate).toLocaleDateString()}</span>
-            </div>
-          ) : null}
+      <div className="flex justify-between items-center text-[11px] text-gray-500 mt-2">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 border-2 p-1 rounded-md">
+            <MessageSquare size={12} />
+            <span>{todo.comments || 0}</span>
+          </div>
+
+          <div className="flex items-center gap-1 border-2 p-1 rounded-md">
+            <Paperclip size={12} />
+            <span>{todo.attachments || 0}</span>
+          </div>
         </div>
 
-        {/* Right: avatars */}
         <div className="flex -space-x-2">
           {todo.assignees?.map((a) => (
-            <Avatar key={a.id} className="h-6 w-6 border">
-              <AvatarImage src={a.avatar} alt="user" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
+            <img
+              key={a.id}
+              src={a.avatar}
+              alt="avatar"
+              className="w-8 h-8 rounded-md border border-gray-200 dark:border-gray-700"
+            />
           ))}
         </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -1,26 +1,30 @@
-import * as React from "react"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+type SegmentedProgressProps = {
+  total: number;
+  completed: number;
+  className?: string;
+};
 
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => (
-  <ProgressPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative h-2 w-full overflow-hidden rounded-full bg-primary/20",
-      className
-    )}
-    {...props}
-  >
-    <ProgressPrimitive.Indicator
-      className="h-full w-full flex-1 bg-primary transition-all"
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </ProgressPrimitive.Root>
-))
-Progress.displayName = ProgressPrimitive.Root.displayName
+export function SegmentedProgress({
+  total,
+  completed,
+  className,
+}: SegmentedProgressProps) {
+  if (total <= 0) return null;
 
-export { Progress }
+  return (
+    <div className={cn("flex gap-1", className)}>
+      {Array.from({ length: total }).map((_, idx) => (
+        <div
+          key={idx}
+          className={cn(
+            "flex-1 h-1.5 rounded",
+            idx < completed ? "bg-green-500" : "bg-gray-200 dark:bg-gray-700"
+          )}
+        />
+      ))}
+    </div>
+  );
+}
