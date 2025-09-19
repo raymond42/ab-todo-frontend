@@ -38,7 +38,7 @@ export default function KanbanBoard() {
   }[] = [
     {
       key: "todo",
-      label: "Todo",
+      label: "To-do",
       variant: "todo",
       icon: <SquarePen size={16} />,
     },
