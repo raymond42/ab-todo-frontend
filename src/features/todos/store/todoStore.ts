@@ -16,7 +16,6 @@ interface TodoState {
   todos: Todo[];
   loading: boolean;
   fetchTodos: () => Promise<void>;
-  updateChecklistItem: (todoId: string, itemId: string) => void;
 }
 
 export const useTodoStore = create<TodoState>((set) => ({
@@ -40,7 +39,6 @@ export const useTodoStore = create<TodoState>((set) => ({
           ? "done"
           : statusCycle[index % statusCycle.length];
 
-        // Only assign checklist manually for selected todos
         const checklist: Todo["checklist"] | undefined =
           t.id === 1
             ? [
@@ -77,17 +75,4 @@ export const useTodoStore = create<TodoState>((set) => ({
       set({ loading: false });
     }
   },
-
-  updateChecklistItem: (todoId, itemId) =>
-    set((state) => ({
-      todos: state.todos.map((t) => {
-        if (t.id !== todoId || !t.checklist) return t;
-        return {
-          ...t,
-          checklist: t.checklist.map((item) =>
-            item.id === itemId ? { ...item, done: !item.done } : item
-          ),
-        };
-      }),
-    })),
 }));
