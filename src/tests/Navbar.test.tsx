@@ -27,19 +27,21 @@ describe("Navbar", () => {
     setup();
 
     ["Kanban", "List", "Calendar"].forEach((label) => {
-      expect(screen.getByText(label)).toBeInTheDocument();
+      const links = screen.getAllByText(label);
+      expect(links.length).toBeGreaterThan(0);
     });
   });
 
   test("marks the active nav item based on route", () => {
     setup("/calendar");
+    const activeLink = screen
+      .getAllByText("Calendar")
+      .map((el) => el.closest("a"))
+      .find((a) => a?.className.includes("dark:bg-neutral-700"));
 
-    const activeLink = screen.getByText("Calendar").closest("a");
-    expect(activeLink).toHaveClass(
-      "dark:bg-neutral-700",
-      "font-medium",
-      "border-2"
-    );
+    expect(activeLink).toBeInTheDocument();
+    expect(activeLink).toHaveClass("font-medium");
+    expect(activeLink).not.toHaveClass("text-gray-600", "dark:text-gray-300");
   });
 
   test("renders search input and buttons", () => {

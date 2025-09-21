@@ -89,7 +89,8 @@ export function StatusTable({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
+      {/* Status header */}
+      <div className="flex items-center gap-2 flex-wrap">
         <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
           {currentStatus?.label}
         </h2>
@@ -102,7 +103,8 @@ export function StatusTable({
         )}
       </div>
 
-      <div className="overflow-x-auto bg-card dark:bg-card text-foreground shadow-md rounded-lg border border-border dark:border-border transition-colors">
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto w-full bg-card dark:bg-card text-foreground shadow-md rounded-lg border border-border dark:border-border transition-colors">
         <table className="min-w-full divide-y divide-border dark:divide-border">
           <thead className="bg-muted dark:bg-muted text-muted-foreground dark:text-muted-foreground">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -110,12 +112,12 @@ export function StatusTable({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="px-6 py-3 text-left text-sm font-medium tracking-wider"
+                    className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium tracking-wider whitespace-nowrap"
                   >
                     <div
                       {...{
                         className: header.column.getCanSort()
-                          ? "cursor-pointer select-none flex items-center"
+                          ? "cursor-pointer select-none flex items-center gap-1"
                           : "",
                         onClick: header.column.getToggleSortingHandler(),
                       }}
@@ -125,7 +127,7 @@ export function StatusTable({
                         header.getContext()
                       )}
                       {header.column.getCanSort() && (
-                        <ArrowUpDown className="ml-2" size={14} />
+                        <ArrowUpDown className="ml-1 sm:ml-2" size={14} />
                       )}
                     </div>
                   </th>
@@ -143,7 +145,7 @@ export function StatusTable({
                 {row.getVisibleCells().map((cell, colIndex) => (
                   <td
                     key={cell.id}
-                    className={`px-6 py-4 text-xs md:text-sm whitespace-nowrap ${
+                    className={`px-3 sm:px-6 py-2 sm:py-4 text-xs sm:text-sm whitespace-nowrap ${
                       colIndex < 3 ? "text-left" : "text-center"
                     }`}
                   >
@@ -154,6 +156,77 @@ export function StatusTable({
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Gmail-style list */}
+      <div className="md:hidden space-y-2">
+        {table.getRowModel().rows.map((row) => {
+          const statusCell = row
+            .getVisibleCells()
+            .find((c) => c.column.id === "status");
+
+          return (
+            <div
+              key={row.id}
+              className="flex items-start p-4 bg-card dark:bg-card shadow rounded-lg border border-border dark:border-border transition-colors hover:bg-muted/50 dark:hover:bg-muted/30"
+            >
+              {/* Content: status + title + secondary info */}
+              <div className="flex items-start gap-3 flex-1 min-w-0">
+                {statusCell && (
+                  <span
+                    className={`p-2 rounded-full flex items-center justify-center ${
+                      statuses.find((s) => s.key === statusCell.getValue())
+                        ?.className
+                    }`}
+                  >
+                    {
+                      statuses.find((s) => s.key === statusCell.getValue())
+                        ?.icon
+                    }
+                  </span>
+                )}
+
+                <div className="flex flex-col truncate">
+                  {/* Main column: skip status + select */}
+                  {row.getVisibleCells().map((cell, idx) => {
+                    if (cell.column.id === "status") return null;
+                    if (cell.column.id === "select") return null;
+                    if (idx === 0)
+                      return (
+                        <span
+                          key={cell.id}
+                          className="text-sm font-semibold text-foreground truncate"
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </span>
+                      );
+                    return null;
+                  })}
+
+                  {/* Secondary info */}
+                  <div className="flex flex-wrap gap-2 mt-1 text-xs text-muted-foreground dark:text-muted-foreground truncate">
+                    {row.getVisibleCells().map((cell, idx) => {
+                      if (cell.column.id === "status") return null;
+                      if (cell.column.id === "select") return null;
+                      if (idx === 0) return null; // already displayed
+                      return (
+                        <span key={cell.id} className="truncate">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
