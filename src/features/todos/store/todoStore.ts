@@ -18,6 +18,8 @@ interface TodoState {
   fetchTodos: () => Promise<void>;
 }
 
+const API_URL = import.meta.env.VITE_API_URL as string | undefined;
+
 export const useTodoStore = create<TodoState>((set) => ({
   todos: [],
   loading: false,
@@ -25,7 +27,10 @@ export const useTodoStore = create<TodoState>((set) => ({
   fetchTodos: async () => {
     set({ loading: true });
     try {
-      const res = await fetch("https://dummyjson.com/todos");
+      if (!API_URL) {
+        throw new Error("API_URL is not defined");
+      }
+      const res = await fetch(API_URL);
       const data = await res.json();
 
       const statusCycle: Todo["status"][] = [
