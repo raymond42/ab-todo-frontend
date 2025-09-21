@@ -15,11 +15,7 @@ export default function Sidebar() {
   const location = useLocation();
 
   const sharedPages = [
-    {
-      to: "/",
-      label: "HR Tasks Hub",
-      matchPaths: ["/", "/list", "/kanban"], // only these paths activate HR
-    },
+    { to: "/", label: "HR Tasks Hub", matchPaths: ["/", "/list", "/kanban"] },
     { to: "/windah", label: "Windah Comp", matchPaths: ["/windah"] },
     { to: "/nospace", label: "NoSpace Dev", matchPaths: ["/nospace"] },
   ];
@@ -30,7 +26,8 @@ export default function Sidebar() {
     );
 
   return (
-    <aside className="w-64 border-r bg-white dark:bg-neutral-900 dark:border-neutral-800 flex flex-col">
+    <aside className="flex flex-col w-64 border-r bg-white dark:bg-neutral-900 dark:border-neutral-800 h-full">
+      {/* Logo */}
       <div className="flex items-center justify-between px-4 py-3 border-b dark:border-neutral-800">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 to-pink-500" />
@@ -39,7 +36,7 @@ export default function Sidebar() {
               Klaboard
             </span>
             <div className="flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-violet-600 to-violet-600 inline-block mr-1"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-600 inline-block mr-1"></span>
               <span className="font-semibold text-xs text-violet-600">
                 free-trial
               </span>
@@ -48,7 +45,8 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <nav className="flex-1 p-3 space-y-2 text-sm text-gray-600 dark:text-gray-300">
+      {/* Main Navigation */}
+      <nav className="flex-1 p-3 space-y-2 text-sm text-gray-600 dark:text-gray-300 overflow-auto">
         <div className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
           <Search size={16} /> <span>Search</span>
         </div>
@@ -80,6 +78,7 @@ export default function Sidebar() {
         </div>
       </nav>
 
+      {/* Shared Pages */}
       <div className="px-3 py-2">
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
           Shared Pages
@@ -102,6 +101,7 @@ export default function Sidebar() {
         </ul>
       </div>
 
+      {/* Private Pages */}
       <div className="px-3 py-2">
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
           Private Pages
@@ -113,6 +113,7 @@ export default function Sidebar() {
         </ul>
       </div>
 
+      {/* Accounts */}
       <div className="px-3 py-2">
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
           Accounts
@@ -129,6 +130,7 @@ export default function Sidebar() {
         </ul>
       </div>
 
+      {/* Upgrade Button */}
       <div className="p-3 mt-auto">
         <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white">
           Upgrade
