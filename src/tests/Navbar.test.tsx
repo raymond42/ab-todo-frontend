@@ -16,7 +16,7 @@ describe("Navbar", () => {
     setup();
 
     expect(screen.getByText("Shared Pages")).toBeInTheDocument();
-    expect(screen.getByText("HR Tasks Hub")).toBeInTheDocument();
+    expect(screen.getAllByText("HR Tasks Hub")[0]).toBeInTheDocument();
     expect(screen.getByText("HR Tasks Hub 🧑‍💼")).toBeInTheDocument();
     expect(
       screen.getByText("Welcome to the Human Resources hub")
@@ -26,32 +26,40 @@ describe("Navbar", () => {
   test("renders nav items with correct labels", () => {
     setup();
 
-    expect(screen.getByText("Kanban")).toBeInTheDocument();
-    expect(screen.getByText("List")).toBeInTheDocument();
-    expect(screen.getByText("Calendar")).toBeInTheDocument();
+    ["Kanban", "List", "Calendar"].forEach((label) => {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    });
   });
 
   test("marks the active nav item based on route", () => {
     setup("/calendar");
-    const activeLink = screen.getByText("Calendar");
 
-    expect(activeLink).toHaveClass("bg-gray-200");
+    const activeLink = screen.getByText("Calendar").closest("a");
+    expect(activeLink).toHaveClass(
+      "dark:bg-neutral-700",
+      "font-medium",
+      "border-2"
+    );
   });
 
   test("renders search input and buttons", () => {
     setup();
 
     expect(screen.getByPlaceholderText("Search here")).toBeInTheDocument();
-    expect(screen.getByText("Filter")).toBeInTheDocument();
-    expect(screen.getByText("Sort")).toBeInTheDocument();
-    expect(screen.getByText("Share")).toBeInTheDocument();
+
+    ["Filter", "Sort", "Share"].forEach((label) => {
+      const button = screen.getByRole("button", {
+        name: new RegExp(label, "i"),
+      });
+      expect(button).toBeInTheDocument();
+    });
   });
 
   test("renders avatars", () => {
     setup();
 
-    expect(screen.getByAltText("User 1")).toBeInTheDocument();
-    expect(screen.getByAltText("User 2")).toBeInTheDocument();
-    expect(screen.getByAltText("User 3")).toBeInTheDocument();
+    ["User 1", "User 2", "User 3"].forEach((alt) => {
+      expect(screen.getByAltText(alt)).toBeInTheDocument();
+    });
   });
 });

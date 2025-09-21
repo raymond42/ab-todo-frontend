@@ -19,30 +19,56 @@ describe("Sidebar", () => {
     expect(screen.getByText("free-trial")).toBeInTheDocument();
   });
 
-  test("renders navigation items", () => {
+  test("renders main navigation items", () => {
     setup();
 
-    expect(screen.getByText("Search")).toBeInTheDocument();
-    expect(screen.getByText("Kla AI")).toBeInTheDocument();
-    expect(screen.getByText("Inbox")).toBeInTheDocument();
-    expect(screen.getByText("Calendar")).toBeInTheDocument();
-    expect(screen.getByText("Settings & Preferences")).toBeInTheDocument();
+    const navItems = [
+      "Search",
+      "Kla AI",
+      "Inbox",
+      "Calendar",
+      "Settings & Preferences",
+    ];
+    navItems.forEach((item) => {
+      expect(screen.getByText(item)).toBeInTheDocument();
+    });
   });
 
   test("renders shared pages section", () => {
     setup();
 
     expect(screen.getByText("Shared Pages")).toBeInTheDocument();
-    expect(screen.getByText("HR Tasks Hub")).toBeInTheDocument();
-    expect(screen.getByText("Windah Comp")).toBeInTheDocument();
-    expect(screen.getByText("NoSpace Dev")).toBeInTheDocument();
+    ["HR Tasks Hub", "Windah Comp", "NoSpace Dev"].forEach((page) => {
+      expect(screen.getByText(page)).toBeInTheDocument();
+    });
   });
 
-  test("marks active nav link based on route", () => {
+  test("marks active main nav link based on route", () => {
     setup("/calendar");
 
-    const calendarLink = screen.getByText("Calendar");
-    expect(calendarLink).toHaveClass("bg-gray-200");
+    const calendarLink = screen.getByText("Calendar").closest("a");
+    expect(calendarLink).toHaveClass(
+      "border-2",
+      "border-gray-200",
+      "dark:border-neutral-700",
+      "font-medium",
+      "text-gray-900",
+      "dark:text-white"
+    );
+  });
+
+  test("marks active shared page based on route", () => {
+    setup("/list");
+
+    const hrTasksLink = screen.getByText("HR Tasks Hub").closest("a");
+    expect(hrTasksLink).toHaveClass(
+      "border-2",
+      "border-gray-200",
+      "dark:border-neutral-700",
+      "font-medium",
+      "text-gray-900",
+      "dark:text-white"
+    );
   });
 
   test("renders private pages and accounts", () => {
@@ -58,6 +84,7 @@ describe("Sidebar", () => {
   test("renders upgrade button", () => {
     setup();
 
-    expect(screen.getByText("Upgrade")).toBeInTheDocument();
+    const upgradeButton = screen.getByRole("button", { name: /upgrade/i });
+    expect(upgradeButton).toBeInTheDocument();
   });
 });

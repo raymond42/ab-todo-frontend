@@ -91,7 +91,7 @@ export default function Sidebar() {
                 to={page.to}
                 className={`flex items-center gap-2 px-2 py-2 rounded-md transition-colors ${
                   isPathActive(page.matchPaths)
-                    ? "border-2 border-gray-200 dark:bg-neutral-700 font-medium text-gray-900 dark:text-white"
+                    ? "border-2 border-gray-200 dark:border-neutral-700 font-medium text-gray-900 dark:text-white"
                     : "hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-300"
                 }`}
               >
