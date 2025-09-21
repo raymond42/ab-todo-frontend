@@ -2,9 +2,11 @@ import KanbanColumn from "./KanbanColumn";
 import { useEffect } from "react";
 import { useTodoStore, Todo } from "@/features/todos/store/todoStore";
 import { SquarePen, CircleDashed, Flame, ShieldCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function KanbanBoard() {
   const { todos, loading, fetchTodos } = useTodoStore();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchTodos();
@@ -15,14 +17,18 @@ export default function KanbanBoard() {
     label: string;
     icon: React.ReactNode;
   }[] = [
-    { key: "todo", label: "To-do", icon: <SquarePen size={16} /> },
+    { key: "todo", label: "todoLabel", icon: <SquarePen size={16} /> },
     {
       key: "onprogress",
-      label: "On Progress",
+      label: "onProgressLabel",
       icon: <CircleDashed size={16} />,
     },
-    { key: "needsreview", label: "Needs Review", icon: <Flame size={16} /> },
-    { key: "done", label: "Done", icon: <ShieldCheck size={16} /> },
+    {
+      key: "needsreview",
+      label: "needsReviewLabel",
+      icon: <Flame size={16} />,
+    },
+    { key: "done", label: "doneLabel", icon: <ShieldCheck size={16} /> },
   ];
 
   if (loading) return <p>Loading...</p>;
@@ -32,7 +38,7 @@ export default function KanbanBoard() {
       {statuses.map((col) => (
         <KanbanColumn
           key={col.key}
-          title={col.label}
+          title={t(col.label)}
           todos={todos.filter((t) => t.status === col.key)}
           icon={col.icon}
           variant={col.key}

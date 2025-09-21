@@ -10,14 +10,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { NavLink, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Sidebar() {
   const location = useLocation();
+  const { t } = useTranslation();
 
   const sharedPages = [
-    { to: "/", label: "HR Tasks Hub", matchPaths: ["/", "/list", "/kanban"] },
-    { to: "/windah", label: "Windah Comp", matchPaths: ["/windah"] },
-    { to: "/nospace", label: "NoSpace Dev", matchPaths: ["/nospace"] },
+    { to: "/", label: t("hrTasksHub"), matchPaths: ["/", "/list", "/kanban"] },
+    { to: "/windah", label: t("windahComp"), matchPaths: ["/windah"] },
+    { to: "/nospace", label: t("noSpaceDev"), matchPaths: ["/nospace"] },
   ];
 
   const isPathActive = (matchPaths: string[]) =>
@@ -33,12 +35,12 @@ export default function Sidebar() {
           <div className="w-6 h-6 rounded bg-gradient-to-r from-purple-500 to-pink-500" />
           <div className="flex flex-col">
             <span className="font-semibold text-gray-900 dark:text-white">
-              Klaboard
+              {t("klaboard")}
             </span>
             <div className="flex items-center">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-600 inline-block mr-1"></span>
               <span className="font-semibold text-xs text-violet-600">
-                free-trial
+                {t("freeTrial")}
               </span>
             </div>
           </div>
@@ -48,16 +50,16 @@ export default function Sidebar() {
       {/* Main Navigation */}
       <nav className="flex-1 p-3 space-y-2 text-sm text-gray-600 dark:text-gray-300 overflow-auto">
         <div className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-          <Search size={16} /> <span>Search</span>
+          <Search size={16} /> <span>{t("search")}</span>
         </div>
         <div className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-          <Home size={16} /> <span>Kla AI</span>
+          <Home size={16} /> <span>{t("klaAi")}</span>
         </div>
         <div className="flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
           <div className="flex items-center gap-2">
-            <Inbox size={16} /> <span>Inbox</span>
+            <Inbox size={16} /> <span>{t("inbox")}</span>
           </div>
-          <Badge className="bg-purple-500 text-white text-xs">New</Badge>
+          <Badge className="bg-purple-500 text-white text-xs">{t("new")}</Badge>
         </div>
 
         <NavLink
@@ -70,18 +72,18 @@ export default function Sidebar() {
             }`
           }
         >
-          <Calendar size={16} /> Calendar
+          <Calendar size={16} /> {t("calendar")}
         </NavLink>
 
         <div className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-          <Settings size={16} /> <span>Settings & Preferences</span>
+          <Settings size={16} /> <span>{t("settingsPreferences")}</span>
         </div>
       </nav>
 
       {/* Shared Pages */}
       <div className="px-3 py-2">
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-          Shared Pages
+          {t("sharedPages")}
         </h4>
         <ul className="mt-2 space-y-1">
           {sharedPages.map((page) => (
@@ -104,11 +106,11 @@ export default function Sidebar() {
       {/* Private Pages */}
       <div className="px-3 py-2">
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-          Private Pages
+          {t("privatePages")}
         </h4>
         <ul className="mt-2 space-y-1">
           <li className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-            <User size={16} /> Dribbble Portfolio
+            <User size={16} /> {t("dribbblePortfolio")}
           </li>
         </ul>
       </div>
@@ -116,7 +118,7 @@ export default function Sidebar() {
       {/* Accounts */}
       <div className="px-3 py-2">
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-          Accounts
+          {t("accounts")}
         </h4>
         <ul className="mt-2 space-y-1">
           <li className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
@@ -125,7 +127,7 @@ export default function Sidebar() {
               alt="User 1"
               className="w-8 h-8 rounded-lg border-2 border-white dark:border-neutral-900"
             />
-            Teheran
+            {t("teheran")}
           </li>
         </ul>
       </div>
@@ -133,7 +135,7 @@ export default function Sidebar() {
       {/* Upgrade Button */}
       <div className="p-3 mt-auto">
         <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-          Upgrade
+          {t("upgrade")}
         </Button>
       </div>
     </aside>

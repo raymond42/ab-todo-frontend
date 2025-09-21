@@ -16,7 +16,7 @@ describe("Sidebar", () => {
     setup();
 
     expect(screen.getByText("Klaboard")).toBeInTheDocument();
-    expect(screen.getByText("free-trial")).toBeInTheDocument();
+    expect(screen.getByText("Free Trial")).toBeInTheDocument();
   });
 
   test("renders main navigation items", () => {

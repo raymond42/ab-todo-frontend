@@ -6,6 +6,7 @@ const config: Config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1", // <- maps @/ to src/
+    "^react-i18next$": "<rootDir>/tests/__mocks__/react-i18next.ts",
   },
   testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };

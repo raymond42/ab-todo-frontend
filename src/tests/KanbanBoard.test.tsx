@@ -9,6 +9,20 @@ jest.mock("lucide-react", () => ({
   ShieldCheck: () => <span data-testid="icon-shield" />,
 }));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const map: Record<string, string> = {
+        todoLabel: "To-do",
+        onProgressLabel: "On Progress",
+        needsReviewLabel: "Needs Review",
+        doneLabel: "Done",
+      };
+      return map[key] || key;
+    },
+  }),
+}));
+
 jest.mock("@/features/todos/components/KanbanCard", () => {
   return function MockKanbanCard({ todo }: any) {
     return <div data-testid="kanban-card">{todo.title}</div>;
