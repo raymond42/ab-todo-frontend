@@ -13,16 +13,19 @@ import {
   Ellipsis,
   Menu,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type NavItem = { to: string; label: string; icon: React.ReactNode };
 
 const navItems: NavItem[] = [
-  { to: "/", label: "Kanban", icon: <LayoutGrid size={16} /> },
-  { to: "/list", label: "List", icon: <List size={16} /> },
-  { to: "/calendar", label: "Calendar", icon: <Calendar size={16} /> },
+  { to: "/", label: "kanban", icon: <LayoutGrid size={16} /> },
+  { to: "/list", label: "list", icon: <List size={16} /> },
+  { to: "/calendar", label: "calendar", icon: <Calendar size={16} /> },
 ];
 
 export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
+  const { i18n, t } = useTranslation();
+
   return (
     <header className="flex flex-wrap md:flex-nowrap items-center justify-between px-4 md:px-6 py-3 border-b bg-white dark:bg-neutral-900 dark:border-neutral-800 gap-2">
       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -36,17 +39,17 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
 
         <div className="min-w-0">
           <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-1 truncate">
-            <span>Shared Pages</span>
+            <span>{t("sharedPages")}</span>
             <ChevronRight size={14} className="mx-1" />
             <span className="font-medium text-gray-700 dark:text-gray-200 truncate">
-              HR Tasks Hub
+              {t("hrHub")}
             </span>
           </div>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
-            HR Tasks Hub 🧑‍💼
+            {t("hrHub")} 🧑‍💼
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-            Welcome to the Human Resources hub
+            {t("welcomeMessage")}
           </p>
 
           {/* Desktop nav items */}
@@ -67,7 +70,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
                   }`
                 }
               >
-                {item.icon} {item.label}
+                {item.icon} {t(item.label)}
               </NavLink>
             ))}
           </nav>
@@ -87,7 +90,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
                   }`
                 }
               >
-                {item.icon} {item.label}
+                {item.icon} {t(item.label)}
               </NavLink>
             ))}
           </nav>
@@ -96,14 +99,14 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
 
       <div className="flex flex-wrap items-center gap-2 md:gap-3">
         <Input
-          placeholder="Search here"
+          placeholder={t("searchPlaceholder")}
           className="w-full sm:w-56 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
         />
         <Button variant="outline" size="sm">
-          <SlidersHorizontal className="mr-1 h-4 w-4" /> Filter
+          <SlidersHorizontal className="mr-1 h-4 w-4" /> {t("filter")}
         </Button>
         <Button variant="outline" size="sm">
-          Sort
+          {t("sort")}
         </Button>
         <Button variant="ghost" size="sm">
           <Star />
@@ -128,8 +131,26 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
         </div>
 
         <Button variant="outline" size="sm">
-          <Share2 className="mr-1 h-4 w-4" /> Share
+          <Share2 className="mr-1 h-4 w-4" /> {t("share")}
         </Button>
+
+        {/* Language Switch */}
+        <div className="flex gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => i18n.changeLanguage("en")}
+          >
+            🇬🇧 EN
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => i18n.changeLanguage("fr")}
+          >
+            🇫🇷 FR
+          </Button>
+        </div>
 
         <ModeToggle />
       </div>

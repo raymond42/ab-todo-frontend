@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { SortingState } from "@tanstack/react-table";
 import { useTodoStore } from "../store/todoStore";
-import { todoColumns } from "@/features/todos/components/ListTableColumns";
+import { useTodoColumns } from "@/features/todos/components/ListTableColumns";
 import { StatusTable } from "../components/ListTable";
 import { Todo } from "@/features/todos/types";
 
@@ -12,6 +12,7 @@ export default function ListPage() {
   const [globalFilter, setGlobalFilter] = useState("");
   const { todos, loading, fetchTodos } = useTodoStore();
   const [rowSelection, setRowSelection] = useState({});
+  const todoColumns = useTodoColumns();
 
   useEffect(() => {
     fetchTodos();
