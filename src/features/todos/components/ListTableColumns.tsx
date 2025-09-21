@@ -4,13 +4,22 @@ import { Todo } from "../types";
 
 const columnHelper = createColumnHelper<Todo>();
 
+const statusStyles: Record<string, string> = {
+  todo: "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-400",
+  onprogress:
+    "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400",
+  needsreview:
+    "bg-violet-100 text-violet-600 dark:bg-violet-900 dark:text-violet-400",
+  done: "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400",
+};
+
 export const todoColumns = [
   columnHelper.display({
     id: "select",
     header: ({ table }) => (
       <input
         type="checkbox"
-        className="w-4 h-4 bg-red-100 border border-red-300 rounded-sm cursor-pointer"
+        className="w-4 h-4 border border-border bg-card dark:bg-card-dark rounded-sm cursor-pointer"
         ref={(el) => {
           if (el) el.indeterminate = table.getIsSomePageRowsSelected();
         }}
@@ -21,7 +30,7 @@ export const todoColumns = [
     cell: ({ row }) => (
       <input
         type="checkbox"
-        className="w-4 h-4 bg-gray-100 border border-gray-300 rounded-sm cursor-pointer"
+        className="w-4 h-4 border border-border bg-card dark:bg-card-dark rounded-sm cursor-pointer"
         ref={(el) => {
           if (el) el.indeterminate = row.getIsSomeSelected();
         }}
@@ -38,7 +47,7 @@ export const todoColumns = [
     cell: (info) => (
       <span
         title={info.getValue()}
-        className="block max-w-[180px] truncate overflow-hidden whitespace-nowrap font-bold text-black/80"
+        className="block max-w-[180px] truncate font-bold text-foreground dark:text-foreground"
       >
         {info.getValue()}
       </span>
@@ -72,14 +81,9 @@ export const todoColumns = [
     id: "status",
     cell: (info) => {
       const value = info.getValue();
-      const statusStyles: Record<string, string> = {
-        todo: "bg-red-100 text-red-400",
-        onprogress: "bg-yellow-100 text-yellow-400",
-        needsreview: "bg-violet-100 text-violet-400",
-        done: "bg-green-100 text-green-400",
-      };
-      const styleClass = statusStyles[value] || "bg-gray-100 text-gray-800";
-
+      const styleClass =
+        statusStyles[value] ||
+        "bg-muted text-muted-foreground dark:bg-muted dark:text-muted-foreground";
       return (
         <span
           className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${styleClass}`}
@@ -115,13 +119,13 @@ export const todoColumns = [
       </span>
     ),
     cell: (info) => (
-      <div className="flex space-x-1">
+      <div className="flex -space-x-2">
         {info.getValue()?.map((a: any) => (
           <img
             key={a.id}
             src={a.avatar}
             alt={`Assignee ${a.id}`}
-            className="w-6 h-6 rounded-lg"
+            className="w-6 h-6 rounded-lg border border-border dark:border-border"
           />
         ))}
       </div>
@@ -138,7 +142,7 @@ export const todoColumns = [
     ),
     cell: () => (
       <Ellipsis
-        className="text-gray-500 hover:text-black cursor-pointer"
+        className="text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground cursor-pointer"
         size={18}
       />
     ),

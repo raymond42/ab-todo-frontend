@@ -1,6 +1,5 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
@@ -9,13 +8,13 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
-        todo: "border-transparent bg-red-100 text-red-400 shadow hover:bg-red-200",
+          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700",
+        todo: "border-transparent bg-red-100 text-red-400 shadow hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800",
         onprogress:
-          "border-transparent bg-violet-100 text-violet-400 shadow hover:bg-violet-200",
+          "border-transparent bg-violet-100 text-violet-400 shadow hover:bg-violet-200 dark:bg-violet-900 dark:text-violet-300 dark:hover:bg-violet-800",
         needsreview:
-          "border-transparent bg-yellow-100 text-yellow-400 shadow hover:bg-yellow-200",
-        done: "border-transparent bg-green-100 text-green-400 shadow hover:bg-green-200",
+          "border-transparent bg-yellow-100 text-yellow-400 shadow hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-800",
+        done: "border-transparent bg-green-100 text-green-400 shadow hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800",
       },
     },
     defaultVariants: {

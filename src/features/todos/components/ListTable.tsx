@@ -25,25 +25,28 @@ const statuses: {
     key: "todo",
     label: "To-do",
     icon: <SquarePen size={16} />,
-    className: "bg-red-100 text-red-600",
+    className: "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-400",
   },
   {
     key: "onprogress",
     label: "On Progress",
     icon: <CircleDashed size={16} />,
-    className: "bg-yellow-100 text-yellow-600",
+    className:
+      "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400",
   },
   {
     key: "needsreview",
     label: "Needs Review",
     icon: <Flame size={16} />,
-    className: "bg-violet-100 text-violet-600",
+    className:
+      "bg-violet-100 text-violet-600 dark:bg-violet-900 dark:text-violet-400",
   },
   {
     key: "done",
     label: "Done",
     icon: <ShieldCheck size={16} />,
-    className: "bg-green-100 text-green-600",
+    className:
+      "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400",
   },
 ];
 
@@ -55,8 +58,8 @@ interface Props {
   globalFilter: string;
   setGlobalFilter: React.Dispatch<React.SetStateAction<string>>;
   columns: any[];
-  rowSelection: Record<string, boolean>;
-  setRowSelection: React.Dispatch<
+  rowSelection?: Record<string, boolean>;
+  setRowSelection?: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
 }
@@ -87,7 +90,7 @@ export function StatusTable({
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
           {currentStatus?.label}
         </h2>
         {currentStatus && (
@@ -99,15 +102,15 @@ export function StatusTable({
         )}
       </div>
 
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="overflow-x-auto bg-card dark:bg-card text-foreground shadow-md rounded-lg border border-border dark:border-border transition-colors">
+        <table className="min-w-full divide-y divide-border dark:divide-border">
+          <thead className="bg-muted dark:bg-muted text-muted-foreground dark:text-muted-foreground">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
+                    className="px-6 py-3 text-left text-sm font-medium tracking-wider"
                   >
                     <div
                       {...{
@@ -130,13 +133,17 @@ export function StatusTable({
               </tr>
             ))}
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+
+          <tbody className="divide-y divide-border dark:divide-border">
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="hover:bg-gray-50">
+              <tr
+                key={row.id}
+                className="hover:bg-muted/50 dark:hover:bg-muted/30 transition-colors"
+              >
                 {row.getVisibleCells().map((cell, colIndex) => (
                   <td
                     key={cell.id}
-                    className={`px-6 py-4 text-xs text-gray-500 whitespace-nowrap ${
+                    className={`px-6 py-4 text-xs md:text-sm whitespace-nowrap ${
                       colIndex < 3 ? "text-left" : "text-center"
                     }`}
                   >

@@ -11,9 +11,11 @@ type Props = {
 
 export default function KanbanColumn({ title, todos, icon, variant }: Props) {
   return (
-    <div className="bg-muted/40 dark:bg-muted/20 rounded-2xl p-4 flex flex-col gap-3 shadow-sm">
-      <div className="flex justify-between items-center mb-1 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-1.5">
-        <h2 className="font-semibold text-foreground">{title}</h2>
+    <div className="bg-white dark:bg-neutral-900 rounded-2xl p-4 flex flex-col gap-3 shadow-sm border border-gray-200 dark:border-gray-800">
+      <div className="flex justify-between items-center mb-1 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 p-1.5 bg-gray-50 dark:bg-neutral-900">
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">
+          {title}
+        </h2>
         <Badge variant={variant} className="text-sm flex gap-1 items-center">
           <span>{icon}</span>
           <span>{todos.length}</span>

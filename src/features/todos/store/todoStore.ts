@@ -65,6 +65,7 @@ export const useTodoStore = create<TodoState>((set) => ({
           assignees: [
             { id: "u1", avatar: "https://i.pravatar.cc/32?img=1" },
             { id: "u2", avatar: "https://i.pravatar.cc/32?img=2" },
+            { id: "u3", avatar: "https://i.pravatar.cc/32?img=3" },
           ],
         };
       });
