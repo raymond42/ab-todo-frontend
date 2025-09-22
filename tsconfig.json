@@ -9,9 +9,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".", // <--- must be root
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"] // <--- maps @/ to src/
+      "@/*": ["src/*"]
     },
     "resolveJsonModule": true
   },
