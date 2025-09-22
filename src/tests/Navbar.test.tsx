@@ -17,7 +17,7 @@ describe("Navbar", () => {
 
     expect(screen.getByText("Shared Pages")).toBeInTheDocument();
     expect(screen.getAllByText("HR Tasks Hub")[0]).toBeInTheDocument();
-    expect(screen.getByText("HR Tasks Hub 🧑‍💼")).toBeInTheDocument();
+    expect(screen.getByText("HR Tasks Hub 🗿")).toBeInTheDocument();
     expect(
       screen.getByText("Welcome to the Human Resources hub")
     ).toBeInTheDocument();

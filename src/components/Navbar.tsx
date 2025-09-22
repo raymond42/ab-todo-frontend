@@ -46,7 +46,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
             </span>
           </div>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
-            {t("hrHub")} 🧑‍💼
+            {t("hrHub")} 🗿
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
             {t("welcomeMessage")}
