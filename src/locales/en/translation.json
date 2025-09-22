@@ -45,5 +45,7 @@
   "todoLabel": "To-Do",
   "onProgressLabel": "On Progress",
   "needsReviewLabel": "Needs Review",
-  "doneLabel": "Done"
+  "doneLabel": "Done",
+  "calendarComingSoonMessage": "We are working hard to bring you the calendar view. Stay tuned!",
+  "comingSoon": "Coming Soon"
 }

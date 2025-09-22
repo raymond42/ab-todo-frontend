@@ -44,5 +44,7 @@
   "onProgressLabel": "En cours",
   "needsReviewLabel": "À réviser",
   "doneLabel": "Terminé",
-  "share": "Partager"
+  "share": "Partager",
+  "calendarComingSoonMessage": "Nous travaillons dur pour vous proposer la vue calendrier. Restez connectés!",
+  "comingSoon": "Bientôt disponible"
 }
