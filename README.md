@@ -56,6 +56,7 @@ pnpm install
 ### 3. Environment variables
 
 ```bash
+VITE_API_URL=dummy-json-url
 
 # Required for Netlify CLI deployments
 NETLIFY_AUTH_TOKEN=your-netlify-auth-token
