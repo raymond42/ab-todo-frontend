@@ -9,3 +9,7 @@ export type Todo = {
   attachments?: number;
   assignees?: { id: string; avatar: string }[];
 };
+
+// declare module "@dnd-kit/utilities" {
+//   export function arrayMove<T>(array: T[], from: number, to: number): T[];
+// }
