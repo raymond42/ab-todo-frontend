@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { SortingState } from "@tanstack/react-table";
 import { Todo } from "../types";
+import { useTranslation } from "react-i18next";
 
 const statuses: {
   key: Todo["status"];
@@ -23,27 +24,27 @@ const statuses: {
 }[] = [
   {
     key: "todo",
-    label: "To-do",
+    label: "todoLabel",
     icon: <SquarePen size={16} />,
     className: "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-400",
   },
   {
     key: "onprogress",
-    label: "On Progress",
+    label: "inProgressLabel",
     icon: <CircleDashed size={16} />,
-    className:
-      "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400",
-  },
-  {
-    key: "needsreview",
-    label: "Needs Review",
-    icon: <Flame size={16} />,
     className:
       "bg-violet-100 text-violet-600 dark:bg-violet-900 dark:text-violet-400",
   },
   {
+    key: "needsreview",
+    label: "needsReviewLabel",
+    icon: <Flame size={16} />,
+    className:
+      "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400",
+  },
+  {
     key: "done",
-    label: "Done",
+    label: "doneLabel",
     icon: <ShieldCheck size={16} />,
     className:
       "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400",
@@ -87,21 +88,23 @@ export function StatusTable({
 
   const currentStatus = statuses.find((s) => s.key === status);
 
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4">
       {/* Status header */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-          {currentStatus?.label}
-        </h2>
-        {currentStatus && (
+      {currentStatus && (
+        <div className="flex items-center gap-2 flex-wrap">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+            {t(currentStatus?.label)}
+          </h2>
           <span
             className={`p-2 rounded-full flex items-center justify-center ${currentStatus.className}`}
           >
             {currentStatus.icon}
           </span>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto w-full bg-card dark:bg-card text-foreground shadow-md rounded-lg border border-border dark:border-border transition-colors">

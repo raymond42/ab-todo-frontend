@@ -1,3 +1,4 @@
+//Sidebar.tsx
 import {
   Home,
   Calendar,
@@ -11,21 +12,92 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import HrTaskHubIcon from "@/assets/hrtaskhub.svg";
+import WindahCompIcon from "@/assets/windahcomp.svg";
+import NoSpaceDev from "@/assets/nospacedev.svg";
+import dribbleIcon from "@/assets/dribble.svg";
+
+function NavItem({
+  to,
+  icon,
+  label,
+  matchPaths = [],
+  badge,
+}: {
+  to?: string;
+  icon: React.ReactNode;
+  label: string;
+  matchPaths?: string[];
+  badge?: string;
+}) {
+  const location = useLocation();
+
+  const isActive = matchPaths.some(
+    (p) => location.pathname === p || location.pathname.startsWith(p + "/")
+  );
+
+  const baseClasses =
+    "flex items-center gap-2 px-2 py-2 rounded-md transition-colors";
+  const activeClasses =
+    "border-2 border-gray-200 dark:border-neutral-700 font-medium text-gray-900 dark:text-white";
+  const inactiveClasses =
+    "hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-300";
+
+  if (to) {
+    return (
+      <NavLink
+        to={to}
+        className={`${baseClasses} ${
+          isActive ? activeClasses : inactiveClasses
+        }`}
+      >
+        {icon}
+        <span>{label}</span>
+        {badge && (
+          <Badge className="ml-auto bg-purple-500 text-white text-xs">
+            {badge}
+          </Badge>
+        )}
+      </NavLink>
+    );
+  }
+
+  return (
+    <div className={`${baseClasses} ${inactiveClasses} cursor-pointer`}>
+      {icon}
+      <span>{label}</span>
+      {badge && (
+        <Badge className="ml-auto bg-purple-500 text-white text-xs">
+          {badge}
+        </Badge>
+      )}
+    </div>
+  );
+}
 
 export default function Sidebar() {
-  const location = useLocation();
   const { t } = useTranslation();
 
   const sharedPages = [
-    { to: "/", label: t("hrTasksHub"), matchPaths: ["/", "/list", "/kanban"] },
-    { to: "/windah", label: t("windahComp"), matchPaths: ["/windah"] },
-    { to: "/nospace", label: t("noSpaceDev"), matchPaths: ["/nospace"] },
+    {
+      to: "/",
+      label: t("hrTasksHub"),
+      matchPaths: ["/", "/list", "/kanban"],
+      icon: <img src={HrTaskHubIcon} alt="HR Tasks Hub" className="w-6 h-6" />,
+    },
+    {
+      to: "/windah",
+      label: t("windahComp"),
+      matchPaths: ["/windah"],
+      icon: <img src={WindahCompIcon} alt="Windah Comp" className="w-6 h-6" />,
+    },
+    {
+      to: "/nospace",
+      label: t("noSpaceDev"),
+      matchPaths: ["/nospace"],
+      icon: <img src={NoSpaceDev} alt="NoSpace Dev" className="w-6 h-6" />,
+    },
   ];
-
-  const isPathActive = (matchPaths: string[]) =>
-    matchPaths.some(
-      (p) => location.pathname === p || location.pathname.startsWith(p + "/")
-    );
 
   return (
     <aside className="flex flex-col w-64 border-r bg-white dark:bg-neutral-900 dark:border-neutral-800 h-full">
@@ -48,36 +120,24 @@ export default function Sidebar() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="flex-1 p-3 space-y-2 text-sm text-gray-600 dark:text-gray-300 overflow-auto">
-        <div className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-          <Search size={16} /> <span>{t("search")}</span>
-        </div>
-        <div className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-          <Home size={16} /> <span>{t("klaAi")}</span>
-        </div>
-        <div className="flex items-center justify-between px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-          <div className="flex items-center gap-2">
-            <Inbox size={16} /> <span>{t("inbox")}</span>
-          </div>
-          <Badge className="bg-purple-500 text-white text-xs">{t("new")}</Badge>
-        </div>
-
-        <NavLink
+      <nav className="flex-1 p-3 space-y-2 text-sm overflow-auto">
+        <NavItem icon={<Search size={16} />} label={t("search")} />
+        <NavItem icon={<Home size={16} />} label={t("klaAi")} />
+        <NavItem
+          icon={<Inbox size={16} />}
+          label={t("inbox")}
+          badge={t("new")}
+        />
+        <NavItem
           to="/calendar"
-          className={({ isActive }) =>
-            `flex items-center gap-2 px-2 py-2 rounded-md transition-colors ${
-              isActive
-                ? "border-2 border-gray-200 dark:border-neutral-700 font-medium text-gray-900 dark:text-white"
-                : "hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-300"
-            }`
-          }
-        >
-          <Calendar size={16} /> {t("calendar")}
-        </NavLink>
-
-        <div className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-          <Settings size={16} /> <span>{t("settingsPreferences")}</span>
-        </div>
+          icon={<Calendar size={16} />}
+          label={t("calendar")}
+          matchPaths={["/calendar"]}
+        />
+        <NavItem
+          icon={<Settings size={16} />}
+          label={t("settingsPreferences")}
+        />
       </nav>
 
       {/* Shared Pages */}
@@ -88,16 +148,17 @@ export default function Sidebar() {
         <ul className="mt-2 space-y-1">
           {sharedPages.map((page) => (
             <li key={page.to}>
-              <NavLink
+              <NavItem
                 to={page.to}
-                className={`flex items-center gap-2 px-2 py-2 rounded-md transition-colors ${
-                  isPathActive(page.matchPaths)
-                    ? "border-2 border-gray-200 dark:border-neutral-700 font-medium text-gray-900 dark:text-white"
-                    : "hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-300"
-                }`}
-              >
-                <GripVertical size={16} /> {page.label}
-              </NavLink>
+                icon={
+                  <>
+                    <GripVertical size={14} className="ml-1 text-gray-400" />
+                    {page.icon}
+                  </>
+                }
+                label={page.label}
+                matchPaths={page.matchPaths}
+              />
             </li>
           ))}
         </ul>
@@ -108,11 +169,16 @@ export default function Sidebar() {
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
           {t("privatePages")}
         </h4>
-        <ul className="mt-2 space-y-1">
-          <li className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
-            <User size={16} /> {t("dribbblePortfolio")}
-          </li>
-        </ul>
+        <NavItem
+          icon={
+            <img
+              src={dribbleIcon}
+              alt="Dribbble Portfolio"
+              className="w-10 rounded-lg border-2 border-white dark:border-neutral-900"
+            />
+          }
+          label={t("dribbblePortfolio")}
+        />
       </div>
 
       {/* Accounts */}
@@ -120,16 +186,16 @@ export default function Sidebar() {
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
           {t("accounts")}
         </h4>
-        <ul className="mt-2 space-y-1">
-          <li className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer">
+        <NavItem
+          icon={
             <img
               src="https://i.pravatar.cc/32?img=1"
               alt="User 1"
               className="w-8 h-8 rounded-lg border-2 border-white dark:border-neutral-900"
             />
-            {t("teheran")}
-          </li>
-        </ul>
+          }
+          label={t("teheran")}
+        />
       </div>
 
       {/* Upgrade Button */}
