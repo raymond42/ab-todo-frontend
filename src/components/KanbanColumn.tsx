@@ -2,6 +2,10 @@ import KanbanCard from "@/features/todos/components/KanbanCard";
 import { Todo } from "@/features/todos/store/todoStore";
 import { Badge } from "@/components/ui/badge";
 import { useDroppable } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { PlusIcon } from "lucide-react";
 
 type Props = {
@@ -30,11 +34,16 @@ export default function KanbanColumn({ title, todos, icon, variant }: Props) {
         </Badge>
       </div>
 
-      <div className="flex flex-col gap-2">
-        {todos.map((todo) => (
-          <KanbanCard key={todo.id} todo={todo} />
-        ))}
-      </div>
+      <SortableContext
+        items={todos.map((t) => t.id)} // 👈 tell dnd-kit the order of cards
+        strategy={verticalListSortingStrategy}
+      >
+        <div className="flex flex-col gap-2">
+          {todos.map((todo) => (
+            <KanbanCard key={todo.id} todo={todo} />
+          ))}
+        </div>
+      </SortableContext>
     </div>
   );
 }

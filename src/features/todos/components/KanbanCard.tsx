@@ -1,19 +1,31 @@
 import { SegmentedProgress } from "@/components/ui/progress";
 import { Todo } from "@/features/todos/store/todoStore";
 import { SquareCheck, Paperclip, MessageSquare } from "lucide-react";
-import { useDraggable } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
   todo: Todo;
 };
 
 export default function KanbanCard({ todo }: Props) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({ id: todo.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: todo.id,
+    data: { status: todo.status },
+  });
 
-  const style = transform
-    ? { transform: `translate(${transform.x}px, ${transform.y}px)`, zIndex: 50 }
-    : undefined;
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 50 : "auto",
+  };
 
   const totalCount = todo.checklist?.length || 0;
   const completedCount =
@@ -89,9 +101,9 @@ export default function KanbanCard({ todo }: Props) {
         </div>
 
         <div className="flex -space-x-3">
-          {todo.assignees?.map((a) => (
+          {todo.assignees?.map((a, idx) => (
             <img
-              key={a.id}
+              key={`${a.id}-${idx}`}
               src={a.avatar}
               alt="avatar"
               className="w-7 h-7 rounded-lg border border-gray-200 dark:border-neutral-700"

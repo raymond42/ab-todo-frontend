@@ -1,12 +1,12 @@
 import KanbanColumn from "./KanbanColumn";
 import { useEffect } from "react";
 import { useTodoStore, Todo } from "@/features/todos/store/todoStore";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { SquarePen, CircleDashed, Flame, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import KanbanDnDContext from "./KanbanDnDContext";
 
 export default function KanbanBoard() {
-  const { todos, loading, fetchTodos, updateTodoStatus } = useTodoStore();
+  const { todos, loading, fetchTodos } = useTodoStore();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -34,20 +34,8 @@ export default function KanbanBoard() {
 
   if (loading) return <p>Loading...</p>;
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { over, active } = event;
-    if (!over) return;
-
-    const newStatus = over.id as Todo["status"];
-    const todoId = active.id as string;
-
-    if (newStatus) {
-      updateTodoStatus(todoId, newStatus);
-    }
-  };
-
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <KanbanDnDContext statuses={statuses}>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {statuses.map((col) => (
           <KanbanColumn
@@ -59,6 +47,6 @@ export default function KanbanBoard() {
           />
         ))}
       </div>
-    </DndContext>
+    </KanbanDnDContext>
   );
 }

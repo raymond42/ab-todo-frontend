@@ -10,6 +10,32 @@ jest.mock("@dnd-kit/core", () => ({
   useDroppable: () => ({
     setNodeRef: jest.fn(),
   }),
+  closestCorners: jest.fn(),
+  DragOverlay: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+}));
+
+// Mock @dnd-kit/sortable
+jest.mock("@dnd-kit/sortable", () => ({
+  arrayMove: (array: any[], from: number, to: number) => {
+    const copy = [...array];
+    const [item] = copy.splice(from, 1);
+    copy.splice(to, 0, item);
+    return copy;
+  },
+  SortableContext: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  verticalListSortingStrategy: jest.fn(),
+  useSortable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: jest.fn(),
+    transform: null,
+    transition: null,
+    isDragging: false,
+  }),
 }));
 
 // Mock lucide-react icons
@@ -21,7 +47,20 @@ jest.mock("lucide-react", () => ({
   PlusIcon: () => <span data-testid="icon-plus" />,
 }));
 
-jest.mock("react-i18next");
+// Mock i18n translation
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const map: Record<string, string> = {
+        todoLabel: "To-do",
+        inProgressLabel: "In Progress",
+        needsReviewLabel: "Needs Review",
+        doneLabel: "Done",
+      };
+      return map[key] || key;
+    },
+  }),
+}));
 
 // Mock KanbanCard
 jest.mock("@/features/todos/components/KanbanCard", () => {
@@ -61,24 +100,27 @@ jest.mock("@/components/ui/badge", () => ({
 const mockFetchTodos = jest.fn();
 const mockUpdateTodoStatus = jest.fn();
 
+const mockUseTodoStore = jest.fn();
+
 jest.mock("@/features/todos/store/todoStore", () => ({
-  useTodoStore: () => ({
-    todos: [
-      { id: "1", title: "Design login page", status: "todo" },
-      { id: "2", title: "API integration", status: "onprogress" },
-      { id: "3", title: "Code review", status: "needsreview" },
-      { id: "4", title: "Deploy to staging", status: "done" },
-    ],
-    loading: false,
-    fetchTodos: mockFetchTodos,
-    updateTodoStatus: mockUpdateTodoStatus,
-  }),
+  useTodoStore: () => mockUseTodoStore(),
 }));
 
 describe("KanbanBoard", () => {
   beforeEach(() => {
     mockFetchTodos.mockClear();
     mockUpdateTodoStatus.mockClear();
+    mockUseTodoStore.mockImplementation(() => ({
+      todos: [
+        { id: "1", title: "Design login page", status: "todo" },
+        { id: "2", title: "API integration", status: "onprogress" },
+        { id: "3", title: "Code review", status: "needsreview" },
+        { id: "4", title: "Deploy to staging", status: "done" },
+      ],
+      loading: false,
+      fetchTodos: mockFetchTodos,
+      updateTodoStatus: mockUpdateTodoStatus,
+    }));
   });
 
   test("renders all columns with correct labels", () => {
@@ -111,13 +153,14 @@ describe("KanbanBoard", () => {
   });
 
   test("displays loading state", () => {
-    jest.doMock("@/features/todos/store/todoStore", () => ({
-      useTodoStore: () => ({
-        todos: [],
-        loading: true,
-        fetchTodos: mockFetchTodos,
-        updateTodoStatus: mockUpdateTodoStatus,
-      }),
+    mockUseTodoStore.mockImplementation(() => ({
+      todos: [],
+      loading: true,
+      fetchTodos: mockFetchTodos,
+      updateTodoStatus: mockUpdateTodoStatus,
     }));
+
+    render(<KanbanBoard />);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 });

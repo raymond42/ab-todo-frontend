@@ -111,8 +111,8 @@ export default function Sidebar() {
 
           <CollapsibleContent>
             <ul className="pt-2 space-y-1">
-              {sharedPages.map((page) => (
-                <li key={page.to}>
+              {sharedPages.map((page, ip) => (
+                <li key={ip}>
                   <NavItem
                     to={page.to}
                     icon={

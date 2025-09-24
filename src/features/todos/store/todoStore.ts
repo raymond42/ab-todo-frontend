@@ -16,7 +16,12 @@ interface TodoState {
   todos: Todo[];
   loading: boolean;
   fetchTodos: () => Promise<void>;
-  updateTodoStatus: (id: string, newStatus: Todo["status"]) => void;
+  updateTodoStatus: (
+    id: string,
+    newStatus: Todo["status"],
+    targetIndex?: number
+  ) => void;
+  reorderTodos: (status: Todo["status"], reordered: Todo[]) => void;
 }
 
 export const useTodoStore = create<TodoState>((set) => ({
@@ -82,10 +87,33 @@ export const useTodoStore = create<TodoState>((set) => ({
     }
   },
 
-  updateTodoStatus: (id: string, newStatus: Todo["status"]) =>
-    set((state) => ({
-      todos: state.todos.map((t) =>
-        t.id === id ? { ...t, status: newStatus } : t
-      ),
-    })),
+  updateTodoStatus: (
+    id: string,
+    newStatus: Todo["status"],
+    targetIndex?: number
+  ) =>
+    set((state) => {
+      const todo = state.todos.find((t) => t.id === id);
+      if (!todo) return state;
+
+      const others = state.todos.filter((t) => t.id !== id);
+      const updated = { ...todo, status: newStatus };
+
+      const sameCol = others.filter((t) => t.status === newStatus);
+
+      if (targetIndex !== undefined) {
+        sameCol.splice(targetIndex, 0, updated);
+      } else {
+        sameCol.push(updated);
+      }
+
+      const rest = others.filter((t) => t.status !== newStatus);
+      return { todos: [...rest, ...sameCol] };
+    }),
+
+  reorderTodos: (status, reordered) =>
+    set((state) => {
+      const others = state.todos.filter((t) => t.status !== status);
+      return { todos: [...others, ...reordered] };
+    }),
 }));
