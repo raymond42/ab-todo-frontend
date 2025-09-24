@@ -67,3 +67,58 @@
     @apply bg-background text-foreground transition-colors;
   }
 }
+
+/* Default: hidden scrollbar */
+.scrollbar-hover {
+  scrollbar-width: none; /* Firefox hides scrollbar */
+}
+
+.scrollbar-hover::-webkit-scrollbar {
+  width: 0px; /* Chrome/Safari/Edge hides scrollbar */
+  background: transparent;
+}
+
+/* Show thin scrollbar only when hovering */
+.scrollbar-hover:hover {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.3) transparent; /* Firefox */
+}
+
+.scrollbar-hover:hover::-webkit-scrollbar {
+  width: 4px; /* Show thin scrollbar on hover */
+}
+
+.scrollbar-hover:hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-hover:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 9999px;
+}
+
+@keyframes collapse-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes collapse-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+[data-state="open"].animate-collapse-down {
+  animation: collapse-down 0.2s ease-out forwards;
+}
+
+[data-state="closed"].animate-collapse-up {
+  animation: collapse-up 0.2s ease-out forwards;
+}

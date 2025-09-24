@@ -2,39 +2,39 @@ import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTranslation } from "react-i18next";
-
 export default function ModeToggle() {
-  const { setTheme } = useTheme();
-  const { t } = useTranslation();
+  const { theme, setTheme, systemTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const currentTheme = theme === "system" ? systemTheme : theme;
+
+  const toggleTheme = () => {
+    setTheme(currentTheme === "light" ? "dark" : "light");
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          {t("light")}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          {t("dark")}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          {t("system")}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <button
+      onClick={toggleTheme}
+      aria-label="Toggle theme"
+      className="relative flex items-center w-14 h-8 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors"
+    >
+      <span
+        className={`absolute top-1 left-1 w-6 h-6 rounded-full flex items-center justify-center bg-white shadow-md transform transition-transform duration-300 ${
+          currentTheme === "dark" ? "translate-x-7" : "translate-x-0"
+        }`}
+      >
+        {currentTheme === "dark" ? (
+          <Moon className="h-4 w-4 text-gray-700" />
+        ) : (
+          <Sun className="h-4 w-4 text-yellow-500" />
+        )}
+      </span>
+    </button>
   );
 }

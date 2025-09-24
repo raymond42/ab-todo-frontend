@@ -1,21 +1,35 @@
 import { SegmentedProgress } from "@/components/ui/progress";
 import { Todo } from "@/features/todos/store/todoStore";
 import { SquareCheck, Paperclip, MessageSquare } from "lucide-react";
+import { useDraggable } from "@dnd-kit/core";
 
 type Props = {
   todo: Todo;
 };
 
 export default function KanbanCard({ todo }: Props) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({ id: todo.id });
+
+  const style = transform
+    ? { transform: `translate(${transform.x}px, ${transform.y}px)`, zIndex: 50 }
+    : undefined;
+
   const totalCount = todo.checklist?.length || 0;
   const completedCount =
     todo.checklist?.filter((item) => item.done).length || 0;
 
   return (
-    <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-700 p-3 flex flex-col gap-2 hover:shadow transition">
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-700 p-3 flex flex-col gap-2 hover:shadow transition"
+    >
       {todo.dueDate && (
         <span className="text-[11px] font-medium text-gray-400 dark:text-gray-500">
-          <span className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 border border-gray-200 dark:border-neutral-600 inline-block mr-1 justify-center" />
+          <span className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 border border-gray-200 dark:border-neutral-600 inline-block mr-1" />
           {new Date(todo.dueDate).toLocaleDateString(undefined, {
             month: "short",
             day: "numeric",
