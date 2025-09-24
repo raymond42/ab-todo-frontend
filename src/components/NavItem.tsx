@@ -27,10 +27,10 @@ const NavItem = ({
   );
 
   const classes = clsx(
-    "flex items-center gap-2 px-2 py-2 rounded-md transition-colors",
+    "flex items-center gap-2 px-2 py-2 rounded-md transition-colors text-sm",
     isActive && !isProfile
       ? "border border-gray-200 dark:border-neutral-700 font-medium text-gray-800 dark:text-white"
-      : "hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-300" +
+      : "hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-300 font-medium" +
           (isProfile ? " font-medium hover:bg-transparent px-0" : "")
   );
 

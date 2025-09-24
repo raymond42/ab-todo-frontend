@@ -9,6 +9,9 @@ import {
   PlusIcon,
   Ellipsis,
   Sun,
+  Sparkles,
+  Mail,
+  CalendarMinus2,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -76,15 +79,15 @@ export default function Sidebar() {
       {/* Main Navigation */}
       <nav className="flex-1 p-3 space-y-2 text-sm">
         <NavItem icon={<Search size={16} />} label={t("search")} />
-        <NavItem icon={<Home size={16} />} label={t("klaAi")} />
+        <NavItem icon={<Sparkles size={16} />} label={t("klaAi")} />
         <NavItem
-          icon={<Inbox size={16} />}
+          icon={<Mail size={16} />}
           label={t("inbox")}
           badge={t("new")}
         />
         <NavItem
           to="/calendar"
-          icon={<Calendar size={16} />}
+          icon={<CalendarMinus2 size={16} />}
           label={t("calendar")}
           matchPaths={["/calendar"]}
         />
