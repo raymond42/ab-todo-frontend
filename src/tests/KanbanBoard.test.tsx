@@ -14,7 +14,7 @@ jest.mock("react-i18next", () => ({
     t: (key: string) => {
       const map: Record<string, string> = {
         todoLabel: "To-do",
-        onProgressLabel: "On Progress",
+        inProgressLabel: "In Progress",
         needsReviewLabel: "Needs Review",
         doneLabel: "Done",
       };
@@ -51,7 +51,7 @@ describe("KanbanBoard", () => {
   test("renders all columns with correct labels", () => {
     render(<KanbanBoard />);
     expect(screen.getByText("To-do")).toBeInTheDocument();
-    expect(screen.getByText("On Progress")).toBeInTheDocument();
+    expect(screen.getByText("In Progress")).toBeInTheDocument();
     expect(screen.getByText("Needs Review")).toBeInTheDocument();
     expect(screen.getByText("Done")).toBeInTheDocument();
   });

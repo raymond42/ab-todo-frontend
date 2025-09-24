@@ -214,7 +214,7 @@ export function StatusTable({
                     {row.getVisibleCells().map((cell, idx) => {
                       if (cell.column.id === "status") return null;
                       if (cell.column.id === "select") return null;
-                      if (idx === 0) return null; // already displayed
+                      if (idx === 0) return null;
                       return (
                         <span key={cell.id} className="truncate">
                           {flexRender(
