@@ -16,6 +16,7 @@ interface TodoState {
   todos: Todo[];
   loading: boolean;
   fetchTodos: () => Promise<void>;
+  updateTodoStatus: (id: string, newStatus: Todo["status"]) => void;
 }
 
 export const useTodoStore = create<TodoState>((set) => ({
@@ -80,4 +81,11 @@ export const useTodoStore = create<TodoState>((set) => ({
       set({ loading: false });
     }
   },
+
+  updateTodoStatus: (id: string, newStatus: Todo["status"]) =>
+    set((state) => ({
+      todos: state.todos.map((t) =>
+        t.id === id ? { ...t, status: newStatus } : t
+      ),
+    })),
 }));

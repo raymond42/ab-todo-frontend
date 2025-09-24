@@ -4,18 +4,6 @@ export const useTranslation = () => {
   return {
     t: (key: string) => {
       const map: Record<string, string> = {
-        // Navbar
-        sharedPages: "Shared Pages",
-        hrHub: "HR Tasks Hub",
-        welcomeMessage: "Welcome to the Human Resources hub",
-        kanban: "Kanban",
-        list: "List",
-        calendar: "Calendar",
-        searchPlaceholder: "Search here",
-        filter: "Filter",
-        sort: "Sort",
-        share: "Share",
-
         // Sidebar
         klaboard: "Klaboard",
         freeTrial: "Free Trial",
@@ -32,6 +20,18 @@ export const useTranslation = () => {
         accounts: "Accounts",
         teheran: "Teheran",
         upgrade: "Upgrade",
+        sharedPages: "Shared Pages",
+
+        // Navbar
+        hrHub: "HR Tasks Hub",
+        welcomeMessage: "Welcome to the Human Resources hub",
+        kanban: "Kanban",
+        list: "List",
+        calendar: "Calendar",
+        searchPlaceholder: "Search here",
+        filter: "Filter",
+        sort: "Sort",
+        share: "Share",
       };
       return map[key] || key;
     },
