@@ -21,7 +21,7 @@ export default function KanbanBoard() {
     { key: "todo", label: "todoLabel", icon: <SquarePen size={16} /> },
     {
       key: "onprogress",
-      label: "onProgressLabel",
+      label: "inProgressLabel",
       icon: <CircleDashed size={16} />,
     },
     {
@@ -42,7 +42,7 @@ export default function KanbanBoard() {
     const todoId = active.id as string;
 
     if (newStatus) {
-      updateTodoStatus(todoId, newStatus); // ✅ update store
+      updateTodoStatus(todoId, newStatus);
     }
   };
 

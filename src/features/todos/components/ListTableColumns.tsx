@@ -85,9 +85,9 @@ export function useTodoColumns() {
           {
             todo: "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-400",
             onprogress:
-              "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400",
-            needsreview:
               "bg-violet-100 text-violet-600 dark:bg-violet-900 dark:text-violet-400",
+            needsreview:
+              "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400",
             done: "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400",
           }[value] ||
           "bg-muted text-muted-foreground dark:bg-muted dark:text-muted-foreground";
@@ -96,7 +96,7 @@ export function useTodoColumns() {
           <span
             className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${styleClass}`}
           >
-            {t(value)} {/* 👈 Direct key: "todo", "done", etc. */}
+            {t(value)}
           </span>
         );
       },

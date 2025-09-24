@@ -25,9 +25,7 @@ export default function KanbanCard({ todo }: Props) {
       style={style}
       {...listeners}
       {...attributes}
-      className={`bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-700 p-3 flex flex-col gap-2 hover:shadow transition ${
-        isDragging ? "opacity-50" : ""
-      }`}
+      className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-700 p-3 flex flex-col gap-2 hover:shadow transition"
     >
       {todo.dueDate && (
         <span className="text-[11px] font-medium text-gray-400 dark:text-gray-500">

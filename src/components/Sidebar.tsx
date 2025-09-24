@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import HrTaskHubIcon from "@/assets/hrtaskhub.svg";
 import WindahCompIcon from "@/assets/windahcomp.svg";
 import NoSpaceDev from "@/assets/nospacedev.svg";
+import dribbleIcon from "@/assets/dribble.svg";
 
 function NavItem({
   to,
@@ -168,7 +169,16 @@ export default function Sidebar() {
         <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
           {t("privatePages")}
         </h4>
-        <NavItem icon={<User size={16} />} label={t("dribbblePortfolio")} />
+        <NavItem
+          icon={
+            <img
+              src={dribbleIcon}
+              alt="Dribbble Portfolio"
+              className="w-10 rounded-lg border-2 border-white dark:border-neutral-900"
+            />
+          }
+          label={t("dribbblePortfolio")}
+        />
       </div>
 
       {/* Accounts */}

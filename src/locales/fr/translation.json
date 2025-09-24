@@ -41,7 +41,7 @@
   "needsreview": "À réviser",
   "done": "Terminé",
   "todoLabel": "À faire",
-  "onProgressLabel": "En cours",
+  "inProgressLabel": "En cours",
   "needsReviewLabel": "À réviser",
   "doneLabel": "Terminé",
   "share": "Partager",

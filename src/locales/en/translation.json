@@ -43,7 +43,7 @@
   "needsreview": "Needs Review",
   "done": "Done",
   "todoLabel": "To-Do",
-  "onProgressLabel": "On Progress",
+  "inProgressLabel": "In Progress",
   "needsReviewLabel": "Needs Review",
   "doneLabel": "Done",
   "calendarComingSoonMessage": "We are working hard to bring you the calendar view. Stay tuned!",
