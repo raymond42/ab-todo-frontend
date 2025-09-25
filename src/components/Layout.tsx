@@ -29,7 +29,7 @@ export default function Layout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <Navbar onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 overflow-auto bg-background p-4 md:p-6 transition-colors">
+        <main className="flex-1 overflow-auto bg-background p-2 md:p-3 transition-colors">
           <Outlet />
         </main>
       </div>
