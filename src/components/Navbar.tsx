@@ -38,7 +38,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const { i18n, t } = useTranslation();
 
   return (
-    <header className="flex flex-col py-3 w-full">
+    <header className="flex flex-col pt-3 w-full">
       {/* Top Row */}
       <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 border-b py-2.5 px-3">
         <div className="flex items-center gap-1 overflow-hidden">
@@ -184,7 +184,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
         </div>
 
         {/* Right-side Controls */}
-        <div className="flex flex-wrap gap-2 md:gap-3 items-end justify-end w-full md:w-auto">
+        <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-3 items-end justify-end w-full md:h-full">
           <Input
             placeholder={t("searchPlaceholder")}
             className="w-full sm:w-56 dark:bg-neutral-900 dark:border-neutral-700 dark:text-white"

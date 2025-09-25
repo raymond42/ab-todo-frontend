@@ -36,7 +36,7 @@ export default function KanbanBoard() {
 
   return (
     <KanbanDnDContext statuses={statuses}>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 rounded-sm border bg-gray-100/45 dark:bg-neutral-900">
         {statuses.map((col) => (
           <KanbanColumn
             key={col.key}
