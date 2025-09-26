@@ -4,6 +4,8 @@ import { useTodoStore, Todo } from "@/features/todos/store/todoStore";
 import { SquarePen, CircleDashed, Flame, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import KanbanDnDContext from "./KanbanDnDContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function KanbanBoard() {
   const { todos, loading, fetchTodos } = useTodoStore();
@@ -32,21 +34,31 @@ export default function KanbanBoard() {
     { key: "done", label: "doneLabel", icon: <ShieldCheck size={16} /> },
   ];
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {statuses.map((col) => (
+          <Skeleton key={col.key} className="h-[500px] w-full rounded-xl" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <KanbanDnDContext statuses={statuses}>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 rounded-sm border bg-gray-100/45 dark:bg-neutral-900">
-        {statuses.map((col) => (
-          <KanbanColumn
-            key={col.key}
-            title={t(col.label)}
-            todos={todos.filter((t) => t.status === col.key)}
-            icon={col.icon}
-            variant={col.key}
-          />
-        ))}
-      </div>
+      <Card className="border bg-gray-50/60 dark:bg-neutral-900">
+        <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {statuses.map((col) => (
+            <KanbanColumn
+              key={col.key}
+              title={t(col.label)}
+              todos={todos.filter((t) => t.status === col.key)}
+              icon={col.icon}
+              variant={col.key}
+            />
+          ))}
+        </CardContent>
+      </Card>
     </KanbanDnDContext>
   );
 }

@@ -86,7 +86,12 @@ jest.mock("@/components/KanbanColumn", () => {
   };
 });
 
-// Mock Badge component
+// ✅ Mock Skeleton
+jest.mock("@/components/ui/skeleton", () => ({
+  Skeleton: (props: any) => <div data-testid="skeleton" {...props} />,
+}));
+
+// Mock Badge
 jest.mock("@/components/ui/badge", () => ({
   Badge: ({
     children,
@@ -99,7 +104,6 @@ jest.mock("@/components/ui/badge", () => ({
 
 const mockFetchTodos = jest.fn();
 const mockUpdateTodoStatus = jest.fn();
-
 const mockUseTodoStore = jest.fn();
 
 jest.mock("@/features/todos/store/todoStore", () => ({
@@ -152,7 +156,7 @@ describe("KanbanBoard", () => {
     expect(mockFetchTodos).toHaveBeenCalled();
   });
 
-  test("displays loading state", () => {
+  test("displays loading state with skeletons", () => {
     mockUseTodoStore.mockImplementation(() => ({
       todos: [],
       loading: true,
@@ -161,6 +165,6 @@ describe("KanbanBoard", () => {
     }));
 
     render(<KanbanBoard />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getAllByTestId("skeleton")).toHaveLength(4); // one per column
   });
 });
