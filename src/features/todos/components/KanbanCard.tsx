@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import AddCardModal from "@/components/AddCardModal";
+import { Trans, useTranslation } from "react-i18next";
 
 type Props = {
   todo: Todo;
@@ -51,6 +52,8 @@ export default function KanbanCard({ todo }: Props) {
     transition,
     zIndex: isDragging ? 50 : "auto",
   };
+
+  const { t } = useTranslation();
 
   const totalCount = todo.checklist?.length || 0;
   const completedCount =
@@ -108,19 +111,19 @@ export default function KanbanCard({ todo }: Props) {
               className="px-3 py-2 text-sm font-semibold text-gray-500 dark:text-gray-100 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-900 rounded-md outline-none border-none"
               onSelect={handleView}
             >
-              View
+              {t("view")}
             </DropdownMenuItem>
             <DropdownMenuItem
               className="px-3 py-2 text-sm text-gray-500 font-semibold dark:text-gray-100 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-900 rounded-md outline-none border-none"
               onSelect={handleEdit}
             >
-              Edit
+              {t("edit")}
             </DropdownMenuItem>
             <DropdownMenuItem
               className="px-3 py-2 text-sm text-red-500 cursor-pointer font-semibold hover:bg-red-100 dark:hover:bg-red-900 rounded-md outline-none border-none"
               onSelect={handleDelete}
             >
-              Delete
+              {t("delete")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -221,20 +224,24 @@ export default function KanbanCard({ todo }: Props) {
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete A Task</AlertDialogTitle>
+            <AlertDialogTitle>{t("deleteTask")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete{" "}
-              <span className="font-bold italic">{todo.title}</span>? This
-              action cannot be undone.
+              <Trans
+                i18nKey="deleteConfirmation"
+                values={{ title: todo.title }}
+                components={{
+                  boldItalic: <span className="font-bold italic" />,
+                }}
+              />
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
-              Delete
+              {t("delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
