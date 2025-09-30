@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { nanoid } from "nanoid";
+import { formatDate } from "@/lib/utils";
 
 export type Todo = {
   id: string;
@@ -7,10 +9,13 @@ export type Todo = {
   status: "todo" | "onprogress" | "needsreview" | "done";
   checklist?: { id: string; text: string; done: boolean }[];
   dueDate?: string;
-  comments?: number;
-  attachments?: number;
+  comments: number;
+  attachments: string[];
   assignees?: { id: string; avatar: string }[];
+  links?: { id: string; url: string }[];
 };
+
+export type NewTodo = Omit<Todo, "id" | "comments" | "attachments">;
 
 interface TodoState {
   todos: Todo[];
@@ -22,9 +27,12 @@ interface TodoState {
     targetIndex?: number
   ) => void;
   reorderTodos: (status: Todo["status"], reordered: Todo[]) => void;
+  addTodo: (todo: NewTodo) => void;
+  updateTodo: (updatedTodo: Todo) => void;
+  deleteTodo: (id: string) => void;
 }
 
-export const useTodoStore = create<TodoState>((set) => ({
+export const useTodoStore = create<TodoState>((set, get) => ({
   todos: [],
   loading: false,
 
@@ -32,9 +40,8 @@ export const useTodoStore = create<TodoState>((set) => ({
     set({ loading: true });
     try {
       const API_URL = import.meta.env.VITE_API_URL as string;
-      if (!API_URL) {
-        throw new Error("API_URL is not defined");
-      }
+      if (!API_URL) throw new Error("API_URL is not defined");
+
       const res = await fetch(API_URL);
       const data = await res.json();
 
@@ -69,13 +76,17 @@ export const useTodoStore = create<TodoState>((set) => ({
           status,
           description: `User ID: ${t.userId}`,
           checklist,
-          dueDate: "2025-12-31T00:00:00.000Z",
+          dueDate: formatDate("2025-12-31T00:00:00.000Z"),
           comments: 0,
           attachments: 2,
           assignees: [
             { id: "u1", avatar: "https://i.pravatar.cc/32?img=1" },
             { id: "u2", avatar: "https://i.pravatar.cc/32?img=2" },
             { id: "u3", avatar: "https://i.pravatar.cc/32?img=3" },
+          ],
+          links: [
+            { id: "l1", url: "https://example.com/docs" },
+            { id: "l2", url: "https://example.com/design" },
           ],
         };
       });
@@ -87,11 +98,7 @@ export const useTodoStore = create<TodoState>((set) => ({
     }
   },
 
-  updateTodoStatus: (
-    id: string,
-    newStatus: Todo["status"],
-    targetIndex?: number
-  ) =>
+  updateTodoStatus: (id, newStatus, targetIndex) =>
     set((state) => {
       const todo = state.todos.find((t) => t.id === id);
       if (!todo) return state;
@@ -101,11 +108,8 @@ export const useTodoStore = create<TodoState>((set) => ({
 
       const sameCol = others.filter((t) => t.status === newStatus);
 
-      if (targetIndex !== undefined) {
-        sameCol.splice(targetIndex, 0, updated);
-      } else {
-        sameCol.push(updated);
-      }
+      if (targetIndex !== undefined) sameCol.splice(targetIndex, 0, updated);
+      else sameCol.push(updated);
 
       const rest = others.filter((t) => t.status !== newStatus);
       return { todos: [...rest, ...sameCol] };
@@ -116,4 +120,26 @@ export const useTodoStore = create<TodoState>((set) => ({
       const others = state.todos.filter((t) => t.status !== status);
       return { todos: [...others, ...reordered] };
     }),
+
+  addTodo: (todo) =>
+    set((state) => {
+      const newTodo: Todo = {
+        ...todo,
+        id: nanoid(),
+        comments: 0,
+        attachments: [],
+      };
+      return { todos: [...state.todos, newTodo] };
+    }),
+
+  updateTodo: (updatedTodo) =>
+    set((state) => {
+      const todos = state.todos.map((t) =>
+        t.id === updatedTodo.id ? updatedTodo : t
+      );
+      return { todos };
+    }),
+
+  deleteTodo: (id) =>
+    set((state) => ({ todos: state.todos.filter((t) => t.id !== id) })),
 }));
