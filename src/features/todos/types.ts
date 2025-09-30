@@ -6,6 +6,10 @@ export type Todo = {
   checklist?: { id: string; text: string; done: boolean }[];
   dueDate?: string;
   comments?: number;
-  attachments?: string[];
+  attachments?: number;
   assignees?: { id: string; avatar: string }[];
 };
+
+// declare module "@dnd-kit/utilities" {
+//   export function arrayMove<T>(array: T[], from: number, to: number): T[];
+// }

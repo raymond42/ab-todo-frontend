@@ -9,22 +9,8 @@ jest.mock("@/features/todos/components/KanbanCard", () => ({
 
 describe("KanbanColumn", () => {
   const mockTodos = [
-    {
-      id: "1",
-      title: "Test 1",
-      description: "",
-      status: "todo" as const,
-      comments: 0,
-      attachments: [],
-    },
-    {
-      id: "2",
-      title: "Test 2",
-      description: "",
-      status: "todo" as const,
-      comments: 0,
-      attachments: [],
-    },
+    { id: "1", title: "Test 1", description: "", status: "todo" as const },
+    { id: "2", title: "Test 2", description: "", status: "todo" as const },
   ];
 
   test("renders title and badge", () => {

@@ -65,7 +65,7 @@ interface Props {
   >;
 }
 
-export function ListTable({
+export function StatusTable({
   status,
   todos,
   sorting,

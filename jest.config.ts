@@ -7,35 +7,17 @@ const config: Config = {
 
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
+
+    // 👇 point to your actual mocks inside src/tests
     "\\.(svg)$": "<rootDir>/src/tests/__mocks__/svgMock.ts",
     "\\.(jpg|jpeg|png|gif|webp|avif)$":
       "<rootDir>/src/tests/__mocks__/fileMock.ts",
+
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
 
   transform: {
-    "^.+\\.(ts|tsx)$": [
-      "ts-jest",
-      {
-        diagnostics: {
-          ignoreCodes: [1343],
-        },
-        astTransformers: {
-          before: [
-            {
-              path: "ts-jest-mock-import-meta",
-              options: {
-                metaObjectReplacement: {
-                  env: {
-                    VITE_API_URL: "http://localhost:3000/api",
-                  },
-                },
-              },
-            },
-          ],
-        },
-      },
-    ],
+    "^.+\\.(ts|tsx)$": "ts-jest",
   },
 
   transformIgnorePatterns: [
