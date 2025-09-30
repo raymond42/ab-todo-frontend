@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { PlusIcon, XIcon } from "lucide-react";
 import {
   Dialog,
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useTodoStore, Todo } from "@/features/todos/store/todoStore";
 import { formatDateForInput } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   variant: "todo" | "onprogress" | "needsreview" | "done";
@@ -40,6 +41,8 @@ export default function AddCardModal({
   const [newLink, setNewLink] = useState("");
   const [assignees, setAssignees] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState("");
+
+  const { t } = useTranslation();
 
   const availableAssignees = [
     { id: "u1", avatar: "https://i.pravatar.cc/32?img=1" },
@@ -75,7 +78,6 @@ export default function AddCardModal({
     if (!isFormValid) return;
 
     if (initialTodo) {
-      // Update existing todo
       updateTodo({
         ...initialTodo,
         title: title.trim(),
@@ -91,7 +93,6 @@ export default function AddCardModal({
         dueDate: formatDateForInput(dueDate),
       });
     } else {
-      // Add new todo
       addTodo({
         title: title.trim(),
         description: description.trim(),
@@ -115,7 +116,11 @@ export default function AddCardModal({
       <DialogContent className="w-[95%] sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-lg p-4 sm:p-6 mx-auto">
         <DialogHeader>
           <DialogTitle>
-            {viewMode ? "View Task" : initialTodo ? "Edit Task" : "Add Task"}
+            {viewMode
+              ? t("viewTask")
+              : initialTodo
+              ? t("editTask")
+              : t("addTask")}
           </DialogTitle>
         </DialogHeader>
 
@@ -123,8 +128,7 @@ export default function AddCardModal({
           {/* Title */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              {" "}
-              Title {!viewMode && "*"}
+              {t("title")} {!viewMode && "*"}
             </label>
             <Input
               value={title}
@@ -136,7 +140,7 @@ export default function AddCardModal({
           {/* Description */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Description {!viewMode && "*"}
+              {t("description")} {!viewMode && "*"}
             </label>
             <Textarea
               value={description}
@@ -148,7 +152,7 @@ export default function AddCardModal({
           {/* Due date */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Due Date {!viewMode && "*"}
+              {t("dueDate")} {!viewMode && "*"}
             </label>
             <Input
               type="date"
@@ -160,13 +164,13 @@ export default function AddCardModal({
 
           {/* Subtasks */}
           <div>
-            <label className="block text-sm mb-1">Subtasks</label>
+            <label className="block text-sm mb-1">{t("subtasks")}</label>
             {!viewMode && (
               <div className="flex gap-2">
                 <Input
                   value={newSubtask}
                   onChange={(e) => setNewSubtask(e.target.value)}
-                  placeholder="Add subtask"
+                  placeholder={t("newSubtaskPlaceholder")}
                 />
                 <Button
                   type="button"
@@ -176,7 +180,7 @@ export default function AddCardModal({
                     setNewSubtask("");
                   }}
                 >
-                  Add
+                  {t("addSubtask")}
                 </Button>
               </div>
             )}
@@ -202,7 +206,7 @@ export default function AddCardModal({
 
           {/* Links */}
           <div>
-            <label className="block text-sm mb-1">Links</label>
+            <label className="block text-sm mb-1">{t("links")}</label>
             {!viewMode && (
               <div className="flex gap-2">
                 <Input
@@ -218,7 +222,7 @@ export default function AddCardModal({
                     setNewLink("");
                   }}
                 >
-                  Add
+                  {t("addLink")}
                 </Button>
               </div>
             )}
@@ -252,7 +256,7 @@ export default function AddCardModal({
           {/* Assignees */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Assignees {!viewMode && "*"}
+              {t("assignees")} {!viewMode && "*"}
             </label>
             <div className="flex gap-2">
               {availableAssignees.map((a) => {
@@ -291,7 +295,7 @@ export default function AddCardModal({
         {!viewMode && (
           <DialogFooter>
             <Button onClick={handleSubmit} disabled={!isFormValid}>
-              {initialTodo ? "Update Task" : "Create Task"}
+              {initialTodo ? t("updateTask") : t("createTask")}
             </Button>
           </DialogFooter>
         )}

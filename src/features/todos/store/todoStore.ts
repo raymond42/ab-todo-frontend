@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { nanoid } from "nanoid";
 import { formatDate } from "@/lib/utils";
+import { toast } from "sonner";
 
 export type Todo = {
   id: string;
@@ -129,6 +130,7 @@ export const useTodoStore = create<TodoState>((set, get) => ({
         comments: 0,
         attachments: [],
       };
+      toast.success("Task added successfully");
       return { todos: [...state.todos, newTodo] };
     }),
 
@@ -137,9 +139,14 @@ export const useTodoStore = create<TodoState>((set, get) => ({
       const todos = state.todos.map((t) =>
         t.id === updatedTodo.id ? updatedTodo : t
       );
+      toast.success("Task updated successfully");
       return { todos };
     }),
 
   deleteTodo: (id) =>
-    set((state) => ({ todos: state.todos.filter((t) => t.id !== id) })),
+    set((state) => {
+      const todos = state.todos.filter((t) => t.id !== id);
+      toast.success("Task deleted successfully");
+      return { todos };
+    }),
 }));
