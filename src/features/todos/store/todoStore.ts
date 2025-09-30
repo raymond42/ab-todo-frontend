@@ -26,11 +26,11 @@ interface TodoState {
     id: string,
     newStatus: Todo["status"],
     targetIndex?: number
-  ) => void;
-  reorderTodos: (status: Todo["status"], reordered: Todo[]) => void;
-  addTodo: (todo: NewTodo) => void;
-  updateTodo: (updatedTodo: Todo) => void;
-  deleteTodo: (id: string) => void;
+  ) => Promise<void>;
+  reorderTodos: (status: Todo["status"], reordered: Todo[]) => Promise<void>;
+  addTodo: (todo: NewTodo) => Promise<void>;
+  updateTodo: (updatedTodo: Todo) => Promise<void>;
+  deleteTodo: (id: string) => Promise<void>;
 }
 
 export const useTodoStore = create<TodoState>((set, get) => ({
@@ -79,7 +79,7 @@ export const useTodoStore = create<TodoState>((set, get) => ({
           checklist,
           dueDate: formatDate("2025-12-31T00:00:00.000Z"),
           comments: 0,
-          attachments: 2,
+          attachments: [],
           assignees: [
             { id: "u1", avatar: "https://i.pravatar.cc/32?img=1" },
             { id: "u2", avatar: "https://i.pravatar.cc/32?img=2" },
@@ -99,7 +99,7 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     }
   },
 
-  updateTodoStatus: (id, newStatus, targetIndex) =>
+  updateTodoStatus: async (id, newStatus, targetIndex) => {
     set((state) => {
       const todo = state.todos.find((t) => t.id === id);
       if (!todo) return state;
@@ -108,21 +108,22 @@ export const useTodoStore = create<TodoState>((set, get) => ({
       const updated = { ...todo, status: newStatus };
 
       const sameCol = others.filter((t) => t.status === newStatus);
-
       if (targetIndex !== undefined) sameCol.splice(targetIndex, 0, updated);
       else sameCol.push(updated);
 
       const rest = others.filter((t) => t.status !== newStatus);
       return { todos: [...rest, ...sameCol] };
-    }),
+    });
+  },
 
-  reorderTodos: (status, reordered) =>
+  reorderTodos: async (status, reordered) => {
     set((state) => {
       const others = state.todos.filter((t) => t.status !== status);
       return { todos: [...others, ...reordered] };
-    }),
+    });
+  },
 
-  addTodo: (todo) =>
+  addTodo: async (todo) => {
     set((state) => {
       const newTodo: Todo = {
         ...todo,
@@ -130,23 +131,26 @@ export const useTodoStore = create<TodoState>((set, get) => ({
         comments: 0,
         attachments: [],
       };
-      toast.success("Task added successfully");
+      toast.success("✅ Task added successfully");
       return { todos: [...state.todos, newTodo] };
-    }),
+    });
+  },
 
-  updateTodo: (updatedTodo) =>
+  updateTodo: async (updatedTodo) => {
     set((state) => {
       const todos = state.todos.map((t) =>
         t.id === updatedTodo.id ? updatedTodo : t
       );
-      toast.success("Task updated successfully");
+      toast.success("✏️ Task updated successfully");
       return { todos };
-    }),
+    });
+  },
 
-  deleteTodo: (id) =>
+  deleteTodo: async (id) => {
     set((state) => {
       const todos = state.todos.filter((t) => t.id !== id);
-      toast.success("Task deleted successfully");
+      toast.success("🗑️ Task deleted successfully");
       return { todos };
-    }),
+    });
+  },
 }));

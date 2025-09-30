@@ -79,7 +79,6 @@ export default function KanbanCard({ todo }: Props) {
   const confirmDelete = () => {
     deleteTodo(todo.id);
     setConfirmOpen(false);
-    toast.success("Todo deleted successfully");
   };
 
   return (
